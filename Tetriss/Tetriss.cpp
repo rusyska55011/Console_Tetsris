@@ -8,7 +8,7 @@ using namespace std;
 class Figure {
 
 	public:
-		Figure(bool * figure, unsigned size, string name) : figure(figure), size(size), name(name) {
+		Figure(const bool * figure, const unsigned size, const string name) : figure(figure), size(size), name(name) {
 			
 			fill_figure();
 
@@ -19,15 +19,15 @@ class Figure {
 			
 		};
 		
-		virtual string* get_name() {
+		virtual const string* get_name() {
 			return &this->name;
 		}
 
-		virtual unsigned* get_size() {
+		virtual const unsigned* get_size() {
 			return &this->size;
 		}
 
-		virtual bool* get_figure() {
+		virtual const bool* get_figure() {
 			return this->figure;
 		}
 
@@ -55,7 +55,7 @@ class Figure {
 		}
 		
 		virtual void show_figure() const {
-			bool* p = this->figure;
+			const bool* p = this->figure;
 			for (int i = 0; i < this->size; i++) {
 				for (int j = 0; j < this->size; j++) {
 					cout << *(p++) << " ";
@@ -82,11 +82,11 @@ class Figure {
 		class Rotation {
 			public:
 
-				Rotation(bool * figure, bool * figure_sided, unsigned * size) : figure(figure), figure_sided(figure_sided), size(size) {};
+				Rotation(const bool * figure, bool * figure_sided, const unsigned * size) : figure(figure), figure_sided(figure_sided), size(size) {};
 
 				void to_normal() {
 					int index;
-					int size = *this->size;
+					const int size = *this->size;
 
 					for (int y = 0; y < size; y++) {
 						for (int x = 0; x < size; x++) {
@@ -99,7 +99,7 @@ class Figure {
 
 				void to_degree180(){
 					int index, reversed_index;
-					int size = *this->size;
+					const int size = *this->size;
 
 					for (int y = 0; y < size; y++) {
 						for (int x = 0; x < size; x++) {
@@ -113,7 +113,7 @@ class Figure {
 
 				void to_degree90(){
 					int index, degree90_index;
-					int size = *this->size;
+					const int size = *this->size;
 
 					for (int y = 0; y < size; y++) {
 						for (int x = 0; x < size; x++) {
@@ -127,7 +127,7 @@ class Figure {
 
 				void to_degree270() {
 					int index, degree270_index;
-					int size = *this->size;
+					const int size = *this->size;
 
 					for (int y = 0; y < size; y++) {
 						for (int x = 0; x < size; x++) {
@@ -140,19 +140,19 @@ class Figure {
 				}
 
 			protected:
-				bool * figure;
+				const bool * figure;
 				bool * figure_sided;
-				unsigned * size;
+				const unsigned * size;
 
 			};
 
 	private:
-		unsigned size;
+		const unsigned size;
 
-		bool* figure;
+		const bool* figure;
 		bool figure_sided[4][4];
 
-		string name;
+		const string name;
 
 		static rotate_angle angle;
 		Rotation rotation{ this->figure, this->figure_sided[0], &this->size};
@@ -186,11 +186,11 @@ Figure::rotate_angle Figure::angle = Figure::rotate_angle::Normal;
 
 class Box : public Figure {
 	private:
-		static bool box[4][4];
+		const static bool box[4][4];
 	public:
 		Box() : Figure(*box, 4, "Box") {};
 };
-bool Box::box[4][4] = {
+const bool Box::box[4][4] = {
 	{0, 0, 0, 0},
 	{0, 1, 1, 0},
 	{0, 1, 1, 0},
@@ -325,17 +325,24 @@ int main() {
 	
 	ZigZag z;
 
-	z.rotate_figure();
 	z.show_figure_sided();
+	cout << "\n";
 
 	z.rotate_figure();
 	z.show_figure_sided();
+	cout << "\n";
 
 	z.rotate_figure();
 	z.show_figure_sided();
+	cout << "\n";
 
 	z.rotate_figure();
 	z.show_figure_sided();
+	cout << "\n";
+
+	z.rotate_figure();
+	z.show_figure_sided();
+	cout << "\n";
 
 	z.rotate_figure();
 	z.show_figure_sided();
