@@ -10,14 +10,12 @@ class Figure {
 	public:
 		Figure(bool * figure, unsigned size, string name) : figure(figure), size(size), name(name) {
 			
-			// Делаем указатель на первый элемент массива, массив пришлось инициализировать в классе, чтобы не брать его аргументом в контрукторе
-			this->figure_sided = sided[0];
 			fill_figure();
 
 			// Конструктор подкласса реализауется НЕ после конца кода этого конструктора, а сразу после инициализации переменных конструктора, не успев начать тело
 			// конструктора Figure. Тут либо надо передавать figure_sided как аргумент этому конструктору, что я считаю не правильным, потому что это копия с другим
 			// адресом памяти. Поэтому мы повторно инициализируем конструктор, поскольку указатель figure_sided вообще не передается без этого!
-			this->rotation = Rotation{ this->figure, this->figure_sided, &this->size }; 
+			this->rotation = Rotation{ this->figure, this->figure_sided[0], &this->size};
 			
 		};
 		
@@ -34,7 +32,7 @@ class Figure {
 		}
 
 		virtual bool* get_figure_sided() {
-			return this->figure_sided;
+			return this->figure_sided[0];
 		}
 
 		enum class rotate_angle { Normal = 0, Degree90 = 1, Degree180 = 2, Degree270 = 3 }; // Перенести объект в Rotation не получится, поскольку не будет аргументов для rotate_figure
@@ -67,7 +65,7 @@ class Figure {
 		}
 
 		virtual void show_figure_sided() const {
-			bool* p = this->figure_sided;
+			const bool* p = this->figure_sided[0];
 			for (int i = 0; i < this->size; i++) {
 				for (int j = 0; j < this->size; j++) {
 					cout << *(p++) << " ";
@@ -152,17 +150,16 @@ class Figure {
 		unsigned size;
 
 		bool* figure;
-		bool* figure_sided;
-		bool sided[4][4];
+		bool figure_sided[4][4];
 
 		string name;
 
 		static rotate_angle angle;
-		Rotation rotation{ this->figure, this->figure_sided, &this->size };
+		Rotation rotation{ this->figure, this->figure_sided[0], &this->size};
 
 		void fill_figure() {
 			for (int i = 0; i < this->size * this->size; i++)
-				*(this->figure_sided + i) = *(this->figure + i);
+				*(this->figure_sided[0] + i) = *(this->figure + i);
 		}
 
 		void do_rotate(rotate_angle angle) {
@@ -325,6 +322,23 @@ class Mechanic {
 
 int main() {
 	setlocale(LC_ALL, "ru");
+	
+	ZigZag z;
+
+	z.rotate_figure();
+	z.show_figure_sided();
+
+	z.rotate_figure();
+	z.show_figure_sided();
+
+	z.rotate_figure();
+	z.show_figure_sided();
+
+	z.rotate_figure();
+	z.show_figure_sided();
+
+	z.rotate_figure();
+	z.show_figure_sided();
 	
 
 	return 0;
