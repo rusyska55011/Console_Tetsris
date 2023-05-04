@@ -248,7 +248,7 @@ class AngleLine : public Figure {
 	private:
 		static bool anglline[4][4];
 	public:
-		AngleLine() : Figure(*anglline, 4, "Triangle") {};
+		AngleLine() : Figure(*anglline, 4, "AngleLine") {};
 };
 bool AngleLine::anglline[4][4] = {
 	{0, 0, 0, 0},
@@ -322,30 +322,6 @@ class Mechanic {
 
 int main() {
 	setlocale(LC_ALL, "ru");
-	
-	ZigZag z;
-
-	z.show_figure_sided();
-	cout << "\n";
-
-	z.rotate_figure();
-	z.show_figure_sided();
-	cout << "\n";
-
-	z.rotate_figure();
-	z.show_figure_sided();
-	cout << "\n";
-
-	z.rotate_figure();
-	z.show_figure_sided();
-	cout << "\n";
-
-	z.rotate_figure();
-	z.show_figure_sided();
-	cout << "\n";
-
-	z.rotate_figure();
-	z.show_figure_sided();
 	
 
 	return 0;
