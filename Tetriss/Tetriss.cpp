@@ -84,66 +84,54 @@ class Figure {
 
 				Rotation(const bool * figure, bool * figure_sided, const unsigned * size) : figure(figure), figure_sided(figure_sided), size(size) {};
 
+
 				void to_normal() {
-					int index;
-					const int size = *this->size;
-
-					for (int y = 0; y < size; y++) {
-						for (int x = 0; x < size; x++) {
-							index = (y * size) + x;
-
-							*(this->figure_sided + index) = *(this->figure + index);
-						}
-					}
+					auto degree_default_by_step_replace{
+						[](int index, int size, int y, int x) {return index;}
+					};
+					this->redraw_figure_sided_by_figure(degree_default_by_step_replace);
 				}
 
-				void to_degree180(){
-					int index, reversed_index;
-					const int size = *this->size;
-
-					for (int y = 0; y < size; y++) {
-						for (int x = 0; x < size; x++) {
-							index = (y * size) + x;
-							reversed_index = (size * size - 1) - index;
-							
-							*(this->figure_sided + index) = *(this->figure + reversed_index);		
-						}
-					}
+				void to_degree180() {
+					auto degree180_by_step_replace{
+						[](int index, int size, int y, int x) {return (size * size - 1) - index;}
+					};
+					this->redraw_figure_sided_by_figure(degree180_by_step_replace);
 				}
 
-				void to_degree90(){
-					int index, degree90_index;
-					const int size = *this->size;
-
-					for (int y = 0; y < size; y++) {
-						for (int x = 0; x < size; x++) {
-							index = (y * size) + x;
-							degree90_index = (size - (1 + y)) + (size * x);
-							
-							*(this->figure_sided + index) = *(this->figure + degree90_index);
-						}
-					}
+				void to_degree90() {
+					auto degree90_by_step_replace{
+						[](int index, int size, int y, int x) {return (size - (1 + y)) + (size * x);}
+					};
+					this->redraw_figure_sided_by_figure(degree90_by_step_replace);
 				}
 
 				void to_degree270() {
-					int index, degree270_index;
-					const int size = *this->size;
-
-					for (int y = 0; y < size; y++) {
-						for (int x = 0; x < size; x++) {
-							index = (y * size) + x;
-							degree270_index = (size * size - (y + 1)) - (size * x);
-
-							*(this->figure_sided + index) = *(this->figure + degree270_index);
-						}
-					}
+					auto degree270_by_step_replace{ 
+						[](int index, int size, int y, int x) {return (size * size - (y + 1)) - (size * x);}
+					};
+					this->redraw_figure_sided_by_figure(degree270_by_step_replace);
 				}
 
 			protected:
 				const bool * figure;
 				bool * figure_sided;
 				const unsigned * size;
+			
+			private:
+				void redraw_figure_sided_by_figure(int (*to_do_by_step)(int index, int size, int y, int x)) {
+					int index, sided_index;
+					const int size = *this->size;
 
+					for (int y = 0; y < size; y++) {
+						for (int x = 0; x < size; x++) {
+							index = (y * size) + x;
+							sided_index = to_do_by_step(index, size, y, x);
+
+							*(this->figure_sided + index) = *(this->figure + sided_index);
+						}
+					}
+				}
 			};
 
 	private:
@@ -305,12 +293,11 @@ class Graphics {
 		Map* map;
 };
 
-
+ 
 
 class Mechanic {
 	public:
 		Mechanic(Map* map, Graphics* graphics, Figure* figure_colletion) : map(map), graphics(graphics), figure_colletion(figure_colletion) {}
-
 
 	private:
 		Map* map;
@@ -323,6 +310,6 @@ class Mechanic {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
-
+	
 	return 0;
 }
