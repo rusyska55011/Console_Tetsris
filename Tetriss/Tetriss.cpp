@@ -342,9 +342,28 @@ class Mechanic {
 
 
 
+class Game {
+	public:
+		static void run() {
+			Map map;
+			char key;
+
+			Box box;
+			Line line;
+			AngleLine angleline;
+			ZigZag zigzag;
+			Triangle triangle;
+
+			Figure figure_collection[] = { box, line, angleline, zigzag, triangle };
+
+			Mechanic mechanic{ &map, key, figure_collection};
+		}
+};
+
 int main() {
 	setlocale(LC_ALL, "ru");
 	
+	Game::run();
 
 	return 0;
 }
