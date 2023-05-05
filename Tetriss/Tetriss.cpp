@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <string>
 #include <conio.h>
+#include <thread>
 
 using namespace std;
 
@@ -301,21 +302,22 @@ class UserInput {
 		
 		void read_keys_infinite() {
 			this->process = 1;
-			
-			Box b;
 
 			char getted = 0;
 			while (this->process) {
 				getted = _getch();
 				if (getted) {
 					this->key = getted;
-					b.show_figure();
 				}
 			}
 		}
 
 		void stop() {
 			this->process = 0;
+		}
+
+		void start() {
+			this->process = 1;
 		}
 
 	private:
@@ -330,6 +332,8 @@ class Mechanic {
 	public:
 		Mechanic(Map* map, Graphics* graphics, Figure* figure_colletion) : map(map), graphics(graphics), figure_colletion(figure_colletion) {}
 
+
+
 	private:
 		Map* map;
 		Graphics* graphics;
@@ -341,16 +345,29 @@ class Mechanic {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
-
 	char key;
-	UserInput ui(key);
-	ui.read_keys_infinite();
+	UserInput ui{ key };
+
+	thread UserTread(
+		[&ui]() {
+			ui.read_keys_infinite();
+		}
+	);
 	
+	ui.stop();
+
+	while (true) {
+		
+
+		cout << key;
+	}
+
+
 	return 0;
 }
 
 /*
-char key = 0;
+	char key = 0;
 	string collection;
 
 	thread t(
