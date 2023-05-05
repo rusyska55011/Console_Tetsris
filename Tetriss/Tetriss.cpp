@@ -345,6 +345,7 @@ class Mechanic {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
+
 	char key;
 	UserInput ui{ key };
 
