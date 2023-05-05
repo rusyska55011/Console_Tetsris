@@ -293,7 +293,38 @@ class Graphics {
 		Map* map;
 };
 
- 
+
+
+class UserInput {
+	public:
+		UserInput(char& key) : key(key){};
+		
+		void read_keys_infinite() {
+			this->process = 1;
+			
+			Box b;
+
+			char getted = 0;
+			while (this->process) {
+				getted = _getch();
+				if (getted) {
+					this->key = getted;
+					b.show_figure();
+				}
+			}
+		}
+
+		void stop() {
+			this->process = 0;
+		}
+
+	private:
+		char& key;
+		static bool process;
+};
+bool UserInput::process = 0;
+
+
 
 class Mechanic {
 	public:
@@ -310,6 +341,40 @@ class Mechanic {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
+
+	char key;
+	UserInput ui(key);
+	ui.read_keys_infinite();
 	
 	return 0;
 }
+
+/*
+char key = 0;
+	string collection;
+
+	thread t(
+		[&key, &collection]() {
+			while (true) {
+				char getted = _getch();
+				if (getted) {
+					key = getted;
+					collection.push_back(getted);
+
+				}
+			}
+		}
+	);
+
+	for (int i = 0; i < 10; i++) {
+		collection.push_back(key);
+
+		cout << i << " " << key;
+		this_thread::sleep_for(chrono::milliseconds(1000));
+		system("cls");
+	}
+
+	cout << collection;
+
+	t.detach();
+*/
