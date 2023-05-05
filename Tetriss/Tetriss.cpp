@@ -330,14 +330,14 @@ bool UserInput::process = 0;
 
 class Mechanic {
 	public:
-		Mechanic(Map* map, Graphics* graphics, Figure* figure_colletion) : map(map), graphics(graphics), figure_colletion(figure_colletion) {}
+		Mechanic(Map* map, char& ui_key, Figure* figure_colletion) : map(map), ui_key(ui_key), figure_colletion(figure_colletion) {}
 
 
 
 	private:
 		Map* map;
-		Graphics* graphics;
 		Figure* figure_colletion;
+		char& ui_key;
 };
 
 
@@ -345,53 +345,6 @@ class Mechanic {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
-	char key;
-	UserInput ui{ key };
-
-	thread UserTread(
-		[&ui]() {
-			ui.read_keys_infinite();
-		}
-	);
-	
-	ui.stop();
-
-	while (true) {
-		
-
-		cout << key;
-	}
-
 
 	return 0;
 }
-
-/*
-	char key = 0;
-	string collection;
-
-	thread t(
-		[&key, &collection]() {
-			while (true) {
-				char getted = _getch();
-				if (getted) {
-					key = getted;
-					collection.push_back(getted);
-
-				}
-			}
-		}
-	);
-
-	for (int i = 0; i < 10; i++) {
-		collection.push_back(key);
-
-		cout << i << " " << key;
-		this_thread::sleep_for(chrono::milliseconds(1000));
-		system("cls");
-	}
-
-	cout << collection;
-
-	t.detach();
-*/
