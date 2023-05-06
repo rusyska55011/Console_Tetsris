@@ -273,8 +273,8 @@ bool Map::area[16][8] = {
 	{0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0},
-	{1, 1, 0, 0, 0, 0, 0, 0},
-	{1, 1, 0, 0, 0, 0, 0, 0}
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0}
 };
 
 
@@ -346,10 +346,6 @@ class Mechanic {
 		
 		Figure::rotate_angle rotation;
 
-		void paste_figure() {
-			cout << is_setted();
-		}
-
 	private:
 		Figure* selected_figure;
 		Figure* figure_colletion;
@@ -357,12 +353,12 @@ class Mechanic {
 		Map* map;
 		char& ui_key;
 		unsigned figure_map_position_xy[2];
-
+		
 		bool is_setted() {
 			bool* figure_sided = this->selected_figure->get_figure_sided();
 
 			int figure_map_position_y = this->figure_map_position_xy[0];
-			int figure_map_position_x = this->figure_map_position_xy[1];	
+			int figure_map_position_x = this->figure_map_position_xy[1];
 
 			for (int figure_pixel_y = 0; figure_pixel_y < 4; figure_pixel_y++) {
 				for (int figure_pixel_x = 0; figure_pixel_x < 4; figure_pixel_x++) {
@@ -371,7 +367,7 @@ class Mechanic {
 
 					int figure_pixel_map_position_y = figure_map_position_y + figure_pixel_y;
 					int figure_pixel_map_position_x = figure_map_position_x + figure_pixel_x;
-					
+
 					if (checked_pixel_figure) {
 						if (this->map->area[figure_pixel_map_position_y + 1][figure_pixel_map_position_x] == true) {
 							return true;
@@ -400,7 +396,6 @@ class Game {
 			Figure figure_collection[] = { box, line, angleline, zigzag, triangle };
 
 			Mechanic mechanic{ &map, key, figure_collection};
-			mechanic.paste_figure();
 		}
 };
 
