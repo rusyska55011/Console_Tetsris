@@ -6,6 +6,12 @@
 using namespace std;
 
 
+template <typename Type>
+Type* get_index_pointer_of_double_array(Type *pointer, const unsigned sizey, const unsigned sizex, const unsigned y, const unsigned x){
+	return sizey >= sizex ? (pointer + (y * sizey) + x) : (pointer + (y * sizex) + x);
+}
+
+
 class Figure {
 
 	public:
