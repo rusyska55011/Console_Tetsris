@@ -281,7 +281,7 @@ bool Map::area[16][8] = {
 
 class Graphics {
 	public:
-		Graphics(Map * map) : map(map) {};
+		Graphics(Map* map, Figure* selected_figure, unsigned* figure_map_position_xy) : map(map), selected_figure(selected_figure), figure_map_position_xy(figure_map_position_xy) {};
 
 		void show () const {
 			system("cls");
@@ -298,6 +298,8 @@ class Graphics {
 
 	private:
 		Map* map;
+		Figure* selected_figure;
+		unsigned* figure_map_position_xy;
 };
 
 
