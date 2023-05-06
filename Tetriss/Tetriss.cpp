@@ -273,8 +273,8 @@ bool Map::area[16][8] = {
 	{0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0}
+	{1, 1, 0, 0, 0, 0, 0, 0},
+	{1, 1, 0, 0, 0, 0, 0, 0}
 };
 
 
@@ -336,14 +336,51 @@ bool UserInput::process = 0;
 
 class Mechanic {
 	public:
-		Mechanic(Map* map, char& ui_key, Figure* figure_colletion) : map(map), ui_key(ui_key), figure_colletion(figure_colletion) {}
 
+		Mechanic(Map* map, char& ui_key, Figure* figure_colletion) : map(map), ui_key(ui_key), figure_colletion(figure_colletion) {
+			this->figure_map_position_xy[0] = 11;
+			this->figure_map_position_xy[1] = 0;
 
+			this->selected_figure = (figure_colletion + 3);
+		}
+		
+		Figure::rotate_angle rotation;
+
+		void paste_figure() {
+			cout << is_setted();
+		}
 
 	private:
-		Map* map;
+		Figure* selected_figure;
 		Figure* figure_colletion;
+
+		Map* map;
 		char& ui_key;
+		unsigned figure_map_position_xy[2];
+
+		bool is_setted() {
+			bool* figure_sided = this->selected_figure->get_figure_sided();
+
+			int figure_map_position_y = this->figure_map_position_xy[0];
+			int figure_map_position_x = this->figure_map_position_xy[1];	
+
+			for (int figure_pixel_y = 0; figure_pixel_y < 4; figure_pixel_y++) {
+				for (int figure_pixel_x = 0; figure_pixel_x < 4; figure_pixel_x++) {
+
+					bool checked_pixel_figure = *get_index_pointer_of_double_array(figure_sided, 4, 4, figure_pixel_y, figure_pixel_x); // массив идет снизу вверх
+
+					int figure_pixel_map_position_y = figure_map_position_y + figure_pixel_y;
+					int figure_pixel_map_position_x = figure_map_position_x + figure_pixel_x;
+					
+					if (checked_pixel_figure) {
+						if (this->map->area[figure_pixel_map_position_y + 1][figure_pixel_map_position_x] == true) {
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
 };
 
 
@@ -363,6 +400,7 @@ class Game {
 			Figure figure_collection[] = { box, line, angleline, zigzag, triangle };
 
 			Mechanic mechanic{ &map, key, figure_collection};
+			mechanic.paste_figure();
 		}
 };
 
