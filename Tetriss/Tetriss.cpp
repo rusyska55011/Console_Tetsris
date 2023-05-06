@@ -348,6 +348,14 @@ class Mechanic {
 		
 		Figure::rotate_angle rotation;
 
+		unsigned* get_figure_poisition() {
+			return this->figure_map_position_xy;
+		}
+
+		Figure* get_selected_figure() {
+			return this->selected_figure;
+		}
+
 	private:
 		Figure* selected_figure;
 		Figure* figure_colletion;
