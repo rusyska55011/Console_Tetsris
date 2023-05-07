@@ -284,14 +284,32 @@ class Graphics {
 		Graphics(Map* map, Figure* selected_figure, unsigned* figure_map_position_xy) : map(map), selected_figure(selected_figure), figure_map_position_xy(figure_map_position_xy) {};
 
 		void show () const {
+			unsigned figure_posisition_y = this->figure_map_position_xy[0];
+			unsigned figure_posisition_x = this->figure_map_position_xy[1];
+			const unsigned figure_size = *this->selected_figure->get_size();
+			const bool* figure = this->selected_figure->get_figure_sided();
+
 			system("cls");
 			for (int y = 0; y < 16; y++) {
 				cout << "\n\t\t";
 				for (int x = 0; x < 8; x++) {
-					if (this->map->area[y][x])
-						cout << "*";
+					
+					if (this->map->area[y][x]) {
+						cout << " *";
+					} else if ((figure_posisition_y <= y) && (figure_posisition_y + figure_size > y)) {
+						
+						if ((figure_posisition_x <= x) && (figure_posisition_x + figure_size > x)) {
+							
+							bool pixel = *get_index_pointer_of_double_array(figure, figure_size, figure_size, y - figure_posisition_y, x - figure_posisition_x);
+							if (pixel)
+								cout << " *";
 					else
-						cout << " ";
+								cout << "  ";
+
+						} else 
+							cout << "  ";
+					} else
+						cout << "  ";
 				}
 			}
 		}
