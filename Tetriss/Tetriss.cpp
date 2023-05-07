@@ -404,7 +404,7 @@ class Mechanic {
 		
 		Figure::rotate_angle rotation;
 
-		unsigned* get_figure_poisition() {
+		unsigned* get_figure_position() {
 			return this->figure_map_position_yx;
 		}
 
