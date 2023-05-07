@@ -398,7 +398,7 @@ class Mechanic {
 
 		Mechanic(Map* map, char& ui_key, Figure* figure_colletion) : map(map), ui_key(ui_key), figure_colletion(figure_colletion) {
 			this->figure_map_position_yx[0] = 0;
-			this->figure_map_position_yx[1] = 0;
+			this->figure_map_position_yx[1] = 2;
 
 			this->selected_figure = (figure_colletion + 3);
 		}
@@ -411,6 +411,14 @@ class Mechanic {
 
 		Figure* get_selected_figure() {
 			return this->selected_figure;
+		}
+
+		void figure_go_down() {
+			this->figure_map_position_yx[0] += 1;
+		}
+
+		void try_set_figure() {
+			cout << is_setted();
 		}
 
 	private:
@@ -465,11 +473,22 @@ class Game {
 
 			Figure figure_collection[] = { box, line, angleline, zigzag, triangle };
 
-			Mechanic mechanic{ &map, key, figure_collection};
+			Mechanic mechanic{ &map, key, figure_collection };
+			
+			Graphics graphics{ &map, mechanic.get_selected_figure(), mechanic.get_figure_position()};
 
-			unsigned position[2] = { 0, 3 };
-			Graphics g{ &map, &figure_collection[2], position };
-			g.show();
+			graphics.render();
+			while (true) {
+				
+				mechanic.figure_go_down();
+
+				graphics.render();
+
+				mechanic.try_set_figure();
+
+				this_thread::sleep_for(chrono::milliseconds(1000));
+			}
+
 		}
 };
 
