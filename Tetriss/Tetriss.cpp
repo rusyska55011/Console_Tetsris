@@ -283,7 +283,7 @@ class Graphics {
 	public:
 		Graphics(Map* map, Figure* selected_figure, unsigned* figure_map_position_yx) : map(map), selected_figure(selected_figure), figure_map_position_yx(figure_map_position_yx) {};
 
-		void show () const {
+		void render () const {
 			unsigned figure_posisition_y = this->figure_map_position_yx[0];
 			unsigned figure_posisition_x = this->figure_map_position_yx[1];
 			const unsigned figure_size = *this->selected_figure->get_size();
