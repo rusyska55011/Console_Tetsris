@@ -281,11 +281,11 @@ bool Map::area[16][8] = {
 
 class Graphics {
 	public:
-		Graphics(Map* map, Figure* selected_figure, unsigned* figure_map_position_xy) : map(map), selected_figure(selected_figure), figure_map_position_xy(figure_map_position_xy) {};
+		Graphics(Map* map, Figure* selected_figure, unsigned* figure_map_position_yx) : map(map), selected_figure(selected_figure), figure_map_position_yx(figure_map_position_yx) {};
 
 		void show () const {
-			unsigned figure_posisition_y = this->figure_map_position_xy[0];
-			unsigned figure_posisition_x = this->figure_map_position_xy[1];
+			unsigned figure_posisition_y = this->figure_map_position_yx[0];
+			unsigned figure_posisition_x = this->figure_map_position_yx[1];
 			const unsigned figure_size = *this->selected_figure->get_size();
 			const bool* figure = this->selected_figure->get_figure_sided();
 
@@ -317,7 +317,7 @@ class Graphics {
 	private:
 		Map* map;
 		Figure* selected_figure;
-		unsigned* figure_map_position_xy;
+		unsigned* figure_map_position_yx;
 };
 
 
@@ -358,8 +358,8 @@ class Mechanic {
 	public:
 
 		Mechanic(Map* map, char& ui_key, Figure* figure_colletion) : map(map), ui_key(ui_key), figure_colletion(figure_colletion) {
-			this->figure_map_position_xy[0] = 11;
-			this->figure_map_position_xy[1] = 0;
+			this->figure_map_position_yx[0] = 0;
+			this->figure_map_position_yx[1] = 0;
 
 			this->selected_figure = (figure_colletion + 3);
 		}
@@ -367,7 +367,7 @@ class Mechanic {
 		Figure::rotate_angle rotation;
 
 		unsigned* get_figure_poisition() {
-			return this->figure_map_position_xy;
+			return this->figure_map_position_yx;
 		}
 
 		Figure* get_selected_figure() {
@@ -380,13 +380,13 @@ class Mechanic {
 
 		Map* map;
 		char& ui_key;
-		unsigned figure_map_position_xy[2];
+		unsigned figure_map_position_yx[2];
 		
 		bool is_setted() {
 			bool* figure_sided = this->selected_figure->get_figure_sided();
 
-			int figure_map_position_y = this->figure_map_position_xy[0];
-			int figure_map_position_x = this->figure_map_position_xy[1];
+			int figure_map_position_y = this->figure_map_position_yx[0];
+			int figure_map_position_x = this->figure_map_position_yx[1];
 
 			for (int figure_pixel_y = 0; figure_pixel_y < 4; figure_pixel_y++) {
 				for (int figure_pixel_x = 0; figure_pixel_x < 4; figure_pixel_x++) {
