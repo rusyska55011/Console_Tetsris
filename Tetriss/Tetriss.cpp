@@ -289,32 +289,70 @@ class Graphics {
 			const unsigned figure_size = *this->selected_figure->get_size();
 			const bool* figure = this->selected_figure->get_figure_sided();
 
+			unsigned map_size_yx[2]{ 16, 8 };
+			unsigned tabulation = 1;
+
 			system("cls");
-			for (int y = 0; y < 16; y++) {
-				cout << "\n\t\t";
-				for (int x = 0; x < 8; x++) {
+
+			for (int y = 0; y < map_size_yx[0]; y++) {
+		
+				this->start_field(tabulation);
+				for (int x = 0; x < map_size_yx[1]; x++) {
 					
 					if (this->map->area[y][x]) {
-						cout << " *";
+						this->draw_pixel();
 					} else if ((figure_posisition_y <= y) && (figure_posisition_y + figure_size > y)) {
 						
 						if ((figure_posisition_x <= x) && (figure_posisition_x + figure_size > x)) {
 							
 							bool pixel = *get_index_pointer_of_double_array(figure, figure_size, figure_size, y - figure_posisition_y, x - figure_posisition_x);
 							if (pixel)
-								cout << " *";
-					else
-								cout << "  ";
+								this->draw_pixel();
+							else
+								this->draw_void();
 
-						} else 
-							cout << "  ";
+						} else
+							this->draw_void();
 					} else
-						cout << "  ";
+						this->draw_void();
 				}
+				this->end_field();
 			}
 		}
 
 	private:
+
+		void do_tabulation(unsigned num) const {
+			for (int i = 0; i < num; i++) {
+				cout << "\t";
+			}
+		}
+
+		void draw_pixel() const {
+			cout << " *";
+		}
+
+		void draw_void() const {
+			cout << "  ";
+		}
+
+		void start_field(unsigned tabulation) const {
+			this->do_tabulation(tabulation);
+			cout << " |";
+		}
+
+		void end_field() const {
+			cout << " |\n";
+		}
+
+		void draw_horizontal_line(unsigned size, unsigned tabulation) const {
+			this->do_tabulation(tabulation);
+			for (int i = 0; i < size; i++) {
+				cout << "--";
+			}
+			cout << "\n";
+		}
+
 		Map* map;
 		Figure* selected_figure;
 		unsigned* figure_map_position_yx;
@@ -391,7 +429,7 @@ class Mechanic {
 			for (int figure_pixel_y = 0; figure_pixel_y < 4; figure_pixel_y++) {
 				for (int figure_pixel_x = 0; figure_pixel_x < 4; figure_pixel_x++) {
 
-					bool checked_pixel_figure = *get_index_pointer_of_double_array(figure_sided, 4, 4, figure_pixel_y, figure_pixel_x); // массив идет снизу вверх
+					bool checked_pixel_figure = *get_index_pointer_of_double_array(figure_sided, 4, 4, figure_pixel_y, figure_pixel_x);
 
 					int figure_pixel_map_position_y = figure_map_position_y + figure_pixel_y;
 					int figure_pixel_map_position_x = figure_map_position_x + figure_pixel_x;
@@ -424,6 +462,10 @@ class Game {
 			Figure figure_collection[] = { box, line, angleline, zigzag, triangle };
 
 			Mechanic mechanic{ &map, key, figure_collection};
+
+			unsigned position[2] = { 0, 3 };
+			Graphics g{ &map, &figure_collection[2], position };
+			g.show();
 		}
 };
 
