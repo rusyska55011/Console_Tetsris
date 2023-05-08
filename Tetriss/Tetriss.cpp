@@ -486,6 +486,33 @@ class Mechanic {
 			return false;
 		}
 	
+		bool is_figure_sided_in_map_pixel_or_out_off_map() {
+			bool* figure_sided = this->selected_figure->get_figure_sided();
+
+			int figure_map_position_y = this->figure_map_position_yx[0];
+			int figure_map_position_x = this->figure_map_position_yx[1];
+
+			for (int figure_pixel_y = 0; figure_pixel_y < 4; figure_pixel_y++) {
+				for (int figure_pixel_x = 0; figure_pixel_x < 4; figure_pixel_x++) {
+
+					bool checked_pixel_figure = *get_index_pointer_of_double_array(figure_sided, 4, 4, figure_pixel_y, figure_pixel_x);
+
+					int figure_pixel_map_position_y = figure_map_position_y + figure_pixel_y;
+					int figure_pixel_map_position_x = figure_map_position_x + figure_pixel_x;
+
+					if (checked_pixel_figure) {
+						if (this->map->area[figure_pixel_map_position_y][figure_pixel_map_position_x] == true) {
+							return true;
+						}
+						if ((figure_pixel_map_position_y > 15) || (figure_pixel_map_position_x > 7)) {
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
+
 	private:
 
 		void fill_figure_collection(Figure* new_figure_collection[]) {
