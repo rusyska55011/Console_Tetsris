@@ -282,7 +282,7 @@ bool Map::area[16][8] = {
 
 class Graphics {
 	public:
-		Graphics(Map* map, Figure* selected_figure, unsigned* figure_map_position_yx) : map(map), selected_figure(selected_figure), figure_map_position_yx(figure_map_position_yx) {};
+		Graphics(Map* map, Figure*& selected_figure, unsigned* figure_map_position_yx) : map(map), selected_figure(selected_figure), figure_map_position_yx(figure_map_position_yx) {};
 
 		void render () const {
 			unsigned figure_posisition_y = this->figure_map_position_yx[0];
@@ -355,7 +355,7 @@ class Graphics {
 		}
 
 		Map* map;
-		Figure* selected_figure;
+		Figure*& selected_figure;
 		unsigned* figure_map_position_yx;
 };
 
@@ -401,8 +401,7 @@ class Mechanic {
 			this->figure_map_position_yx[1] = 2;
 
 			this->fill_figure_collection(figure_colletion);
-			this->selected_figure = figure_colletion[4];
-
+			this->selected_figure = figure_colletion[rand() % 5];
 		}
 		
 		Figure::rotate_angle rotation;
@@ -411,8 +410,12 @@ class Mechanic {
 			return this->figure_map_position_yx;
 		}
 
-		Figure* get_selected_figure() {
+		Figure*& get_selected_figure() {
 			return this->selected_figure;
+		}
+
+		void select_new_figure() {
+			this->selected_figure = this->figure_colletion[rand() % 5];
 		}
 
 		void figure_go_down() {
