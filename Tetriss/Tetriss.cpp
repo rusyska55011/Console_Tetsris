@@ -396,7 +396,7 @@ bool UserInput::process = 0;
 class Mechanic {
 	public:
 
-		Mechanic(Map* map, char& ui_key, Figure* figure_colletion) : map(map), ui_key(ui_key), figure_colletion(figure_colletion) {
+		Mechanic(Map* map, char& ui_key, Figure* figure_colletion[]) : map(map), ui_key(ui_key) {
 			this->figure_map_position_yx[0] = 0;
 			this->figure_map_position_yx[1] = 2;
 
@@ -423,7 +423,7 @@ class Mechanic {
 
 	private:
 		Figure* selected_figure;
-		Figure* figure_colletion;
+		Figure* figure_colletion[5];
 
 		Map* map;
 		char& ui_key;
@@ -455,6 +455,14 @@ class Mechanic {
 			}
 			return false;
 		}
+	
+	private:
+
+		void fill_figure_collection(Figure* new_figure_collection[]) {
+			for (int i = 0; i < 5; i++) {
+				this->figure_colletion[i] = new_figure_collection[i];
+			}
+		}
 };
 
 
@@ -471,9 +479,9 @@ class Game {
 			ZigZag zigzag;
 			Triangle triangle;
 
-			Figure figure_collection[] = { box, line, angleline, zigzag, triangle };
+			Figure* figure_collection[] = { &box, &line, &angleline, &zigzag, &triangle };
 
-			Mechanic mechanic{ &map, key, figure_collection };
+			Mechanic mechanic{ &map, key, figure_collection};
 			
 			Graphics graphics{ &map, mechanic.get_selected_figure(), mechanic.get_figure_position()};
 
