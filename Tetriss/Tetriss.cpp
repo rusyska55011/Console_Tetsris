@@ -423,7 +423,12 @@ class Mechanic {
 			cout << is_setted();
 		}
 
-	private:
+		void figure_rotate() {
+			this->selected_figure->rotate_figure();
+		}
+
+	protected:
+
 		Figure* selected_figure;
 		Figure* figure_colletion[5];
 
@@ -492,9 +497,11 @@ class Game {
 				
 				mechanic.figure_go_down();
 
+				mechanic.try_set_figure();
+
 				graphics.render();
 
-				mechanic.try_set_figure();
+				mechanic.figure_rotate();
 
 				this_thread::sleep_for(chrono::milliseconds(1000));
 			}
