@@ -400,7 +400,9 @@ class Mechanic {
 			this->figure_map_position_yx[0] = 0;
 			this->figure_map_position_yx[1] = 2;
 
-			this->selected_figure = (figure_colletion + 3);
+			this->fill_figure_collection(figure_colletion);
+			this->selected_figure = figure_colletion[4];
+
 		}
 		
 		Figure::rotate_angle rotation;
