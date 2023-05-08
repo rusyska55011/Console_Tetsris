@@ -423,7 +423,7 @@ class Mechanic {
 		}
 
 		void try_set_figure() {
-			if (is_setted()) {
+			if (this->is_setted()) {
 				bool* figure_sided = this->selected_figure->get_figure_sided();
 
 				int figure_map_position_y = this->figure_map_position_yx[0];
