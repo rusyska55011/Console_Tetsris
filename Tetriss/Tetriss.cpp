@@ -544,7 +544,7 @@ class Mechanic {
 						if (this->map->area[figure_pixel_map_position_y][figure_pixel_map_position_x] == true) {
 							return true;
 						}
-						if ((figure_pixel_map_position_y > 15) || (figure_pixel_map_position_x > 7)) {
+						if ((figure_pixel_map_position_y > 15) || (figure_pixel_map_position_y < 0) || (figure_pixel_map_position_x > 7) || (figure_pixel_map_position_x < 0)) {
 							return true;
 						}
 					}
