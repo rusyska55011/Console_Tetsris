@@ -730,7 +730,7 @@ class Game {
 								mechanic.figure_rotate(); break;
 							case 'p':
 							case 'з':
-								this->pause(key);
+								this->pause(key); break;
 						}
 						
 						graphics.render();
