@@ -225,6 +225,21 @@ bool ZigZag::zigzag[4][4] = {
 
 
 
+class MirroredZigZag : public Figure {
+	private:
+		static bool mirrored_zigzag[4][4];
+	public:
+		MirroredZigZag() : Figure(*mirrored_zigzag, 4, "ReversedZigZag") {};
+};
+bool MirroredZigZag::mirrored_zigzag[4][4] = {
+	{0, 0, 0, 0},
+	{0, 0, 1, 1},
+	{0, 1, 1, 0},
+	{0, 0, 0, 0},
+};
+
+
+
 class Triangle : public Figure {
 	private:
 		static bool triangle[4][4];
@@ -251,6 +266,21 @@ bool AngleLine::anglline[4][4] = {
 	{0, 1, 1, 0},
 	{0, 1, 0, 0},
 	{0, 1, 0, 0},
+};
+
+
+
+class MirroredAngleLine : public Figure {
+	private:
+		static bool mirrored_anglline[4][4];
+	public:
+		MirroredAngleLine() : Figure(*mirrored_anglline, 4, "MirroredAngleLine") {};
+};
+bool MirroredAngleLine::mirrored_anglline[4][4] = {
+	{0, 0, 0, 0},
+	{0, 1, 1, 0},
+	{0, 0, 1, 0},
+	{0, 0, 1, 0},
 };
 
 
@@ -638,12 +668,14 @@ class Game {
 			Box box;
 			Line line;
 			AngleLine angleline;
+			MirroredAngleLine mirrored_angleline;
 			ZigZag zigzag;
+			MirroredZigZag mirrored_zigzag;
 			Triangle triangle;
 
-			Figure* figure_collection[] = { &box, &line, &angleline, &zigzag, &triangle };
+			Figure* figure_collection[] = { &box, &line, &angleline, &mirrored_angleline, &zigzag, &mirrored_zigzag, &triangle };
 
-			Mechanic mechanic{ &map, key, figure_collection, 5};
+			Mechanic mechanic{ &map, key, figure_collection, 7};
 
 			Graphics graphics{ &map, mechanic.get_selected_figure(), mechanic.get_figure_position()};
 
@@ -667,7 +699,7 @@ class Game {
 					mechanic.delete_full_rows();
 					graphics.render();
 				}
-				/*
+				
 				for (int tryings = 0; tryings < 100; tryings++) {
 					if (key) {
 						switch (key) {
@@ -691,7 +723,7 @@ class Game {
 					}
 					this_thread::sleep_for(chrono::microseconds(10));
 				}
-				*/
+				
 				graphics.render();
 
 				if (mechanic.is_game_over())
