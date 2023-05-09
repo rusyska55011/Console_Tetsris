@@ -377,7 +377,6 @@ class UserInput {
 
 	private:
 		char& key;
-		static bool process;
 };
 
 
