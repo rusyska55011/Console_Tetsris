@@ -454,13 +454,14 @@ class Mechanic {
 		}
 
 		void delete_full_rows() {
-			int row;
+			int row_y;
 			while (true) {
-				row = this->find_full_row();
-				if (row >= 0) {
-					for (int x = 0; x < 8; x++) {
-						this->map->area[row][x] = 0;
-					}
+				row_y = this->find_full_row();
+				if (row_y >= 0) {
+					this->delete_row(row_y);
+					
+					this->map_move_down(row_y);
+
 				} else {
 					break;
 				}
@@ -581,7 +582,10 @@ class Mechanic {
 						return y;
 				}
 			}
-			return -1;
+
+		void delete_row(int y) {
+			for (int x = 0; x < 8; x++)
+				this->map->area[y][x] = 0;
 		}
 
 	private:
