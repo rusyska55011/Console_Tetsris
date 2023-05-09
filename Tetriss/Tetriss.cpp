@@ -467,6 +467,14 @@ class Mechanic {
 			}
 		}
 
+		bool is_game_over() {
+			for (int x = 0; x < 16; x++) {
+				if (this->map->area[0][x])
+					return true;
+			}
+			return false;
+		}
+
 	protected:
 
 		Figure* selected_figure;
