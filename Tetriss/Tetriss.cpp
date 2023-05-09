@@ -393,7 +393,6 @@ class Graphics {
 
 class UserInput {
 	public:
-		
 		void read_keys_infinite() {
 			char getted = 0;
 			while (true) {
@@ -665,7 +664,16 @@ class Mechanic {
 
 class Game {
 	public:
-		static void run() {
+		void pause(char& key) {
+			key = 0;
+			cout << "\nPAUSE. Key 'p' for continuing...";
+			while (true) {
+				if (key == 'p')
+					break;
+			}
+		}
+
+		void run() {
 			Map map;
 			
 			Box box;
@@ -720,6 +728,9 @@ class Game {
 							case 'r':
 							case 'к':
 								mechanic.figure_rotate(); break;
+							case 'p':
+							case 'з':
+								this->pause(key);
 						}
 						
 						graphics.render();
@@ -742,7 +753,7 @@ class Game {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
-	Game::run();
+	Game().run();
 
 	return 0;
 }
