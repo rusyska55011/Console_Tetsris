@@ -656,6 +656,8 @@ class Game {
 				if (mechanic.have_trying_set_figure()) {
 					mechanic.to_default_map_position();
 					mechanic.select_new_figure();
+					mechanic.delete_full_rows();
+					graphics.render();
 				}
 				
 				for (int tryings = 0; tryings < 100; tryings++) {
@@ -682,7 +684,7 @@ class Game {
 				}
 
 				graphics.render();
-				mechanic.delete_full_rows();
+				
 
 				if (mechanic.is_game_over())
 					break;
