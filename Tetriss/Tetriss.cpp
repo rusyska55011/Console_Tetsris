@@ -663,13 +663,17 @@ class Game {
 				for (int tryings = 0; tryings < 100; tryings++) {
 					if (key) {
 						switch (key) {
-							case 'a':
+							case 'a': 
+							case 'ф':
 								mechanic.figure_go_left(); break;
 							case 'd':
+							case 'в':
 								mechanic.figure_go_right(); break;
 							case 's':
+							case 'ы':
 								mechanic.figure_go_down(); break;
 							case 'r':
+							case 'к':
 								mechanic.figure_rotate(); break;
 						}
 						
