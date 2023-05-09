@@ -458,7 +458,7 @@ class Mechanic {
 			while (true) {
 				row = this->find_full_row();
 				if (row >= 0) {
-					for (int x = 0; x < 16; x++) {
+					for (int x = 0; x < 8; x++) {
 						this->map->area[row][x] = 0;
 					}
 				} else {
