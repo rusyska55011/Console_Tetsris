@@ -649,10 +649,10 @@ class Game {
 
 			graphics.render();
 			while (true) {
-				graphics.render();
 
 				mechanic.figure_go_down();
-				
+				graphics.render();
+
 				if (mechanic.have_trying_set_figure()) {
 					mechanic.to_default_map_position();
 					mechanic.select_new_figure();
@@ -677,9 +677,6 @@ class Game {
 								mechanic.figure_rotate(); break;
 						}
 						
-						//if (!(tryings % 10))
-						//	mechanic.delete_full_rows();
-						
 						graphics.render();
 
 						key = 0;
@@ -688,7 +685,6 @@ class Game {
 				}
 
 				graphics.render();
-				
 
 				if (mechanic.is_game_over())
 					break;
@@ -701,7 +697,20 @@ class Game {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
-	Game::run();
+	//Game::run();
+
+	AngleLine a;
+
+	a.show_figure();
+	cout << "\n--------\n 90 degree: \n";
+
+	a.rotate_figure(Figure::rotate_angle::Degree90);
+	a.show_figure_sided();
+	cout << "\n-------- \n 270 degree: \n";
+
+	a.rotate_figure(Figure::rotate_angle::Degree270);
+	a.show_figure_sided();
+
 
 	return 0;
 }
