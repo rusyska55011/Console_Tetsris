@@ -453,6 +453,20 @@ class Mechanic {
 			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
 		}
 
+		void delete_full_rows() {
+			int row;
+			while (true) {
+				row = this->find_full_row();
+				if (row >= 0) {
+					for (int x = 0; x < 16; x++) {
+						this->map->area[row][x] = 0;
+					}
+				} else {
+					break;
+				}
+			}
+		}
+
 	protected:
 
 		Figure* selected_figure;
@@ -547,6 +561,19 @@ class Mechanic {
 					}
 				}
 			}
+		}
+
+		int find_full_row() {
+			for (int y = 0; y < 16; y++) {
+				for (int x = 0; x < 8; x++) {
+					if (!(this->map->area[y][x]))
+						break;
+						
+					if (x == 7)
+						return y;
+				}
+			}
+			return -1;
 		}
 
 	private:
