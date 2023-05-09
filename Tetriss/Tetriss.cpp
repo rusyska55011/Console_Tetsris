@@ -366,10 +366,8 @@ class UserInput {
 		UserInput(char& key) : key(key){};
 		
 		void read_keys_infinite() {
-			this->process = 1;
-
 			char getted = 0;
-			while (this->process) {
+			while (1) {
 				getted = _getch();
 				if (getted) {
 					this->key = getted;
@@ -377,19 +375,10 @@ class UserInput {
 			}
 		}
 
-		void stop() {
-			this->process = 0;
-		}
-
-		void start() {
-			this->process = 1;
-		}
-
 	private:
 		char& key;
 		static bool process;
 };
-bool UserInput::process = 0;
 
 
 
