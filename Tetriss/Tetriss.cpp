@@ -287,7 +287,7 @@ class Graphics {
 		void render () const {
 			unsigned figure_posisition_y = this->figure_map_position_yx[0];
 			unsigned figure_posisition_x = this->figure_map_position_yx[1];
-			const unsigned figure_size = *this->selected_figure->get_size();
+			const unsigned figure_size = *this->selected_figure->get_size();	
 			const bool* figure = this->selected_figure->get_figure_sided();
 
 			unsigned map_size_yx[2]{ 16, 8 };
@@ -367,7 +367,7 @@ class UserInput {
 		
 		void read_keys_infinite() {
 			char getted = 0;
-			while (1) {
+			while (true) {
 				getted = _getch();
 				if (getted) {
 					this->key = getted;
@@ -486,7 +486,7 @@ class Mechanic {
 		Map* map;
 		char& ui_key;
 		unsigned figure_map_position_yx[2];
-		
+
 		bool is_setted() {
 			bool* figure_sided = this->selected_figure->get_figure_sided();
 
@@ -507,13 +507,13 @@ class Mechanic {
 						}
 						if (figure_pixel_map_position_y + 1 >= 16) {
 							return true;
+						}
 					}
 				}
 			}
-			}
 			return false;
 		}
-	
+		
 		bool is_figure_sided_in_map_pixel_or_out_off_map() {
 			bool* figure_sided = this->selected_figure->get_figure_sided();
 
@@ -602,8 +602,8 @@ class Mechanic {
 				for (int x = 0; x < 8; x++) {
 					this->replace_pixel(y, x, y + 1, x);
 				}
-				}
 			}
+		}
 
 		void delete_row(int y) {
 			for (int x = 0; x < 8; x++)
@@ -636,23 +636,59 @@ class Game {
 			Figure* figure_collection[] = { &box, &line, &angleline, &zigzag, &triangle };
 
 			Mechanic mechanic{ &map, key, figure_collection};
-			
+
 			Graphics graphics{ &map, mechanic.get_selected_figure(), mechanic.get_figure_position()};
+
+			UserInput key_input{ key };
+
+			thread key_catching_thread(
+				[&key_input]() {
+					key_input.read_keys_infinite();
+				}
+			);
 
 			graphics.render();
 			while (true) {
-				
-				mechanic.figure_go_down();
-
-				mechanic.try_set_figure();
-
 				graphics.render();
 
-				mechanic.figure_rotate();
+				mechanic.figure_go_down();
+				
+				if (mechanic.have_trying_set_figure()) {
+					mechanic.to_default_map_position();
+					mechanic.select_new_figure();
+				}
+				
+				for (int tryings = 0; tryings < 100; tryings++) {
+					if (key) {
+						switch (key) {
+							case 'a':
+								mechanic.figure_go_left(); break;
+							case 'd':
+								mechanic.figure_go_right(); break;
+							case 's':
+								mechanic.figure_go_down(); break;
+							case 'r':
+								mechanic.figure_rotate(); break;
+						}
+						
+						if (!(tryings % 10))
+							mechanic.delete_full_rows();
+						
+						graphics.render();
 
-				this_thread::sleep_for(chrono::milliseconds(1000));
+						key = 0;
+					}
+					this_thread::sleep_for(chrono::microseconds(10));
+				}
+
+				graphics.render();
+				mechanic.delete_full_rows();
+
+				if (mechanic.is_game_over())
+					break;
 			}
-
+			cout << "\nGAME IS OVER\n";
+			key_catching_thread.detach();
 		}
 };
 
