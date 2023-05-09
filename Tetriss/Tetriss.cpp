@@ -393,7 +393,6 @@ class Graphics {
 
 class UserInput {
 	public:
-		UserInput(char& key) : key(key){};
 		
 		void read_keys_infinite() {
 			char getted = 0;
@@ -405,17 +404,22 @@ class UserInput {
 			}
 		}
 
+		char& get_key_link() {
+			return key;
+		}
+
 	private:
-		char& key;
+		static char key;
 };
+char UserInput::key = 0;
 
 
 
 class Mechanic {
 	public:
 
-		Mechanic(Map* map, char& ui_key, Figure* new_figure_colletion[], unsigned collection_size) : map(map), ui_key(ui_key), collection_size(collection_size) {
-			
+		Mechanic(Map* map, UserInput ui, Figure* new_figure_colletion[], unsigned collection_size) : map(map), collection_size(collection_size), ui_key(ui.get_key_link()) {
+
 			this->figure_colletion = new Figure*[this->collection_size];
 
 			this->fill_figure_collection(new_figure_colletion, collection_size);
@@ -663,8 +667,7 @@ class Game {
 	public:
 		static void run() {
 			Map map;
-			char key;
-
+			
 			Box box;
 			Line line;
 			AngleLine angleline;
@@ -672,20 +675,22 @@ class Game {
 			ZigZag zigzag;
 			MirroredZigZag mirrored_zigzag;
 			Triangle triangle;
-
+			
 			Figure* figure_collection[] = { &box, &line, &angleline, &mirrored_angleline, &zigzag, &mirrored_zigzag, &triangle };
 
-			Mechanic mechanic{ &map, key, figure_collection, 7};
+			UserInput key_input;
+
+			Mechanic mechanic{ &map, key_input, figure_collection, 7};
 
 			Graphics graphics{ &map, mechanic.get_selected_figure(), mechanic.get_figure_position()};
-
-			UserInput key_input{ key };
 
 			thread key_catching_thread(
 				[&key_input]() {
 					key_input.read_keys_infinite();
 				}
 			);
+
+			char& key = key_input.get_key_link();
 
 			graphics.render();
 			while (true) {
