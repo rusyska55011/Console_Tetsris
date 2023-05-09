@@ -539,6 +539,19 @@ class Mechanic {
 			return false;
 		}
 
+		int find_full_row() {
+			for (int y = 0; y < 16; y++) {
+				for (int x = 0; x < 8; x++) {
+					if (!(this->map->area[y][x]))
+						break;
+
+					if (x == 7)
+						return y;
+				}
+			}
+			return -1;
+		}
+
 		void fixing_figure_sided_in_map_pixel_or_out_off_map() {
 			unsigned default_y = this->figure_map_position_yx[0];
 			unsigned default_x = this->figure_map_position_yx[1];
@@ -572,14 +585,21 @@ class Mechanic {
 			}
 		}
 
-		int find_full_row() {
-			for (int y = 0; y < 16; y++) {
+		void replace_pixel(int from_y, int from_x, int to_y1, int to_x1) {
+			Map *map = this->map;
+			
+			bool temp_from_var = map->area[from_y][from_x];
+			
+			map->area[from_y][from_x] = map->area[to_y1][to_x1];
+			map->area[to_y1][to_x1] = temp_from_var;
+
+		}
+
+		void map_move_down(int border_y) {
+			for (int y = border_y - 1; y > 0; y--) {
 				for (int x = 0; x < 8; x++) {
-					if (!(this->map->area[y][x]))
-						break;
-						
-					if (x == 7)
-						return y;
+					this->replace_pixel(y, x, y + 1, x);
+				}
 				}
 			}
 
