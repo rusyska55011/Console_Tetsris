@@ -397,8 +397,7 @@ class Mechanic {
 	public:
 
 		Mechanic(Map* map, char& ui_key, Figure* figure_colletion[]) : map(map), ui_key(ui_key) {
-			this->figure_map_position_yx[0] = 0;
-			this->figure_map_position_yx[1] = 2;
+			this->to_default_map_position();
 
 			this->fill_figure_collection(figure_colletion);
 			this->selected_figure = figure_colletion[rand() % 5];
@@ -443,8 +442,6 @@ class Mechanic {
 						}
 					}
 				}
-				this->figure_map_position_yx[0] = 0;
-				this->figure_map_position_yx[1] = 3;
 				return true;
 			}
 			return false;
@@ -468,6 +465,11 @@ class Mechanic {
 					break;
 				}
 			}
+		}
+
+		void to_default_map_position() {
+			this->figure_map_position_yx[0] = 0;
+			this->figure_map_position_yx[1] = 3;
 		}
 
 		bool is_game_over() {
