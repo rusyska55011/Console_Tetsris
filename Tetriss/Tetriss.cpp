@@ -384,11 +384,18 @@ class UserInput {
 class Mechanic {
 	public:
 
-		Mechanic(Map* map, char& ui_key, Figure* figure_colletion[]) : map(map), ui_key(ui_key) {
-			this->to_default_map_position();
+		Mechanic(Map* map, char& ui_key, Figure* new_figure_colletion[], unsigned collection_size) : map(map), ui_key(ui_key), collection_size(collection_size) {
+			
+			this->figure_colletion = new Figure*[this->collection_size];
 
-			this->fill_figure_collection(figure_colletion);
-			this->selected_figure = figure_colletion[rand() % 5];
+			this->fill_figure_collection(new_figure_colletion, collection_size);
+
+			this->to_default_map_position();
+			this->selected_figure = figure_colletion[rand() % this->collection_size];
+		}
+
+		~Mechanic() {
+			delete[](figure_colletion);
 		}
 		
 		Figure::rotate_angle rotation;
@@ -402,7 +409,7 @@ class Mechanic {
 		}
 
 		void select_new_figure() {
-			this->selected_figure = this->figure_colletion[rand() % 5];
+			this->selected_figure = this->figure_colletion[rand() % this->collection_size];
 			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
 		}
 
@@ -481,7 +488,8 @@ class Mechanic {
 	protected:
 
 		Figure* selected_figure;
-		Figure* figure_colletion[5];
+		Figure** figure_colletion;
+		unsigned collection_size;
 
 		Map* map;
 		char& ui_key;
@@ -612,8 +620,8 @@ class Mechanic {
 
 	private:
 
-		void fill_figure_collection(Figure* new_figure_collection[]) {
-			for (int i = 0; i < 5; i++) {
+		void fill_figure_collection(Figure* new_figure_collection[], unsigned collection_size) {
+			for (int i = 0; i < collection_size; i++) {
 				this->figure_colletion[i] = new_figure_collection[i];
 			}
 		}
@@ -635,7 +643,7 @@ class Game {
 
 			Figure* figure_collection[] = { &box, &line, &angleline, &zigzag, &triangle };
 
-			Mechanic mechanic{ &map, key, figure_collection};
+			Mechanic mechanic{ &map, key, figure_collection, 5};
 
 			Graphics graphics{ &map, mechanic.get_selected_figure(), mechanic.get_figure_position()};
 
@@ -659,7 +667,7 @@ class Game {
 					mechanic.delete_full_rows();
 					graphics.render();
 				}
-				
+				/*
 				for (int tryings = 0; tryings < 100; tryings++) {
 					if (key) {
 						switch (key) {
@@ -683,7 +691,7 @@ class Game {
 					}
 					this_thread::sleep_for(chrono::microseconds(10));
 				}
-
+				*/
 				graphics.render();
 
 				if (mechanic.is_game_over())
@@ -697,20 +705,7 @@ class Game {
 int main() {
 	setlocale(LC_ALL, "ru");
 	
-	//Game::run();
-
-	AngleLine a;
-
-	a.show_figure();
-	cout << "\n--------\n 90 degree: \n";
-
-	a.rotate_figure(Figure::rotate_angle::Degree90);
-	a.show_figure_sided();
-	cout << "\n-------- \n 270 degree: \n";
-
-	a.rotate_figure(Figure::rotate_angle::Degree270);
-	a.show_figure_sided();
-
+	Game::run();
 
 	return 0;
 }
