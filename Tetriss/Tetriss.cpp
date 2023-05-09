@@ -416,10 +416,12 @@ class Mechanic {
 
 		void select_new_figure() {
 			this->selected_figure = this->figure_colletion[rand() % 5];
+			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
 		}
 
 		void figure_go_down() {
 			this->figure_map_position_yx[0] += 1;
+			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
 		}
 
 		void try_set_figure() {
@@ -448,6 +450,7 @@ class Mechanic {
 
 		void figure_rotate() {
 			this->selected_figure->rotate_figure();
+			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
 		}
 
 	protected:
