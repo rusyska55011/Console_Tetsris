@@ -109,14 +109,14 @@ class Figure {
 
 				void to_degree90() {
 					auto degree90_by_step_replace{
-						[](int index, int size, int y, int x) {return (size - (1 + y)) + (size * x);}
+						[](int index, int size, int y, int x) {return (size - (y + 1)) + (size * x);}
 					};
 					this->redraw_figure_sided_by_figure(degree90_by_step_replace);
 				}
 
 				void to_degree270() {
 					auto degree270_by_step_replace{ 
-						[](int index, int size, int y, int x) {return (size * size - (y + 1)) - (size * x);}
+						[](int index, int size, int y, int x) {return (size * size - (size - y)) - (size * x);}
 					};
 					this->redraw_figure_sided_by_figure(degree270_by_step_replace);
 				}
