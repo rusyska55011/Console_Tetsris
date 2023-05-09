@@ -424,7 +424,7 @@ class Mechanic {
 			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
 		}
 
-		void try_set_figure() {
+		bool have_trying_set_figure() {
 			if (this->is_setted()) {
 				bool* figure_sided = this->selected_figure->get_figure_sided();
 
@@ -445,7 +445,9 @@ class Mechanic {
 				}
 				this->figure_map_position_yx[0] = 0;
 				this->figure_map_position_yx[1] = 3;
+				return true;
 			}
+			return false;
 		}
 
 		void figure_rotate() {
