@@ -423,6 +423,16 @@ class Mechanic {
 			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
 		}
 
+		void figure_go_left() {
+			this->figure_map_position_yx[1] -= 1;
+			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
+		}
+
+		void figure_go_right() {
+			this->figure_map_position_yx[1] += 1;
+			this->fixing_figure_sided_in_map_pixel_or_out_off_map();
+		}
+
 		bool have_trying_set_figure() {
 			if (this->is_setted()) {
 				bool* figure_sided = this->selected_figure->get_figure_sided();
