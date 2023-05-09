@@ -596,7 +596,7 @@ class Mechanic {
 		}
 
 		void map_move_down(int border_y) {
-			for (int y = border_y - 1; y > 0; y--) {
+			for (int y = border_y - 1; y >= 0; y--) {
 				for (int x = 0; x < 8; x++) {
 					this->replace_pixel(y, x, y + 1, x);
 				}
