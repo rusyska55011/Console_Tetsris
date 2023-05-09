@@ -677,8 +677,8 @@ class Game {
 								mechanic.figure_rotate(); break;
 						}
 						
-						if (!(tryings % 10))
-							mechanic.delete_full_rows();
+						//if (!(tryings % 10))
+						//	mechanic.delete_full_rows();
 						
 						graphics.render();
 
