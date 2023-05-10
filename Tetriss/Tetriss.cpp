@@ -417,7 +417,7 @@ char UserInput::key = 0;
 class Mechanic {
 	public:
 
-		Mechanic(Map* map, UserInput ui, Figure* new_figure_colletion[], unsigned collection_size) : map(map), collection_size(collection_size), ui_key(ui.get_key_link()) {
+		Mechanic(Map* map, Figure* new_figure_colletion[], unsigned collection_size) : map(map), collection_size(collection_size) {
 
 			this->figure_colletion = new Figure*[this->collection_size];
 
@@ -525,7 +525,6 @@ class Mechanic {
 		unsigned collection_size;
 
 		Map* map;
-		char& ui_key;
 		unsigned figure_map_position_yx[2];
 
 		bool is_setted() {
@@ -686,12 +685,13 @@ class Game {
 			
 			Figure* figure_collection[] = { &box, &line, &angleline, &mirrored_angleline, &zigzag, &mirrored_zigzag, &triangle };
 
-			UserInput key_input;
+			
 
-			Mechanic mechanic{ &map, key_input, figure_collection, 7};
+			Mechanic mechanic{ &map, figure_collection, 7};
 
 			Graphics graphics{ &map, mechanic.get_selected_figure(), mechanic.get_figure_position()};
 
+			UserInput key_input;
 			thread key_catching_thread(
 				[&key_input]() {
 					key_input.read_keys_infinite();
