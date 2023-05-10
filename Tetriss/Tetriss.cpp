@@ -663,14 +663,6 @@ class Mechanic {
 
 class Game {
 	public:
-		void pause(char& key) {
-			key = 0;
-			cout << "\nPAUSE. Key 'p' for continuing...";
-			while (true) {
-				if (key == 'p')
-					break;
-			}
-		}
 
 		void run() {
 			Map map;
@@ -684,8 +676,6 @@ class Game {
 			Triangle triangle;
 			
 			Figure* figure_collection[] = { &box, &line, &angleline, &mirrored_angleline, &zigzag, &mirrored_zigzag, &triangle };
-
-			
 
 			Mechanic mechanic{ &map, figure_collection, 7};
 
@@ -747,6 +737,17 @@ class Game {
 			}
 			cout << "\nGAME IS OVER\n";
 			key_catching_thread.detach();
+		}
+
+	private:
+
+		void pause(char& key) {
+			key = 0;
+			cout << "\nPAUSE. Key 'p' for continuing...";
+			while (true) {
+				if (key == 'p')
+					break;
+			}
 		}
 };
 
